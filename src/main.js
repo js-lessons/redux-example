@@ -2,8 +2,28 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import showdown from 'showdown'
+import firebase from 'firebase'
 
 const converter = new showdown.Converter()
+const firebaseConfig = {
+  apiKey: 'AIzaSyAFj1kU8V5xLpBHLab6n1iPyg5ogVgJKwc',
+  authDomain: 'comments-demo-e289c.firebaseapp.com',
+  databaseURL: 'https://comments-demo-e289c.firebaseio.com',
+  projectId: 'comments-demo-e289c',
+  storageBucket: '',
+  messagingSenderId: '110382393864'
+}
+const snapshotToArray = (snapshot) => {
+  const returnArr = []
+
+  snapshot.forEach((childSnapshot) => {
+    returnArr.push(childSnapshot.val())
+  })
+
+  return returnArr
+}
+
+firebase.initializeApp(firebaseConfig)
 
 const Comment = ({ children, author }) => {
   const rawMarkup = converter.makeHtml(children.toString())
@@ -23,34 +43,33 @@ Comment.propTypes = {
   author: PropTypes.string
 }
 
-const mockedComments = [
-  {
-    author: 'Pete Hunt',
-    text: 'Hey there!'
-  }
-]
-
 class CommentBox extends Component {
   static propTypes = {
-    pollInterval: PropTypes.number.isRequired
+    pollInterval: PropTypes.number.isRequired,
+    database: PropTypes.object.isRequired
   }
 
   state = {data: []}
 
   loadCommentsFromServer = () => {
-    setTimeout(() => {
-      this.setState({data: mockedComments})
-    }, 500)
+    const { database } = this.props
+
+    database.ref('/comments').once('value').then((snapshot) => {
+      const comments = snapshotToArray(snapshot) || []
+      this.setState({data: comments})
+    })
   }
 
   handleCommentSubmit = (comment) => {
     const comments = [...this.state.data, comment]
+    const { database } = this.props
 
     this.setState({data: comments}, () => {
       // `setState` accepts a callback. To avoid (improbable) race condition,
       // `we'll send the ajax request right after we optimistically set the new
       // `state.
-      mockedComments.push(comment)
+      const newCommentRef = database.ref('/comments').push()
+      newCommentRef.set(comment)
     })
   }
 
@@ -128,6 +147,6 @@ class CommentForm extends Component {
 }
 
 ReactDOM.render(
-  <CommentBox url="comments.json" pollInterval={2000} />,
+  <CommentBox database={firebase.database()} pollInterval={2000} />,
   document.getElementById('root')
 )
