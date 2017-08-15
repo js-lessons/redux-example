@@ -45,7 +45,6 @@ Comment.propTypes = {
 
 class CommentBox extends Component {
   static propTypes = {
-    pollInterval: PropTypes.number.isRequired,
     database: PropTypes.object.isRequired
   }
 
@@ -54,7 +53,7 @@ class CommentBox extends Component {
   loadCommentsFromServer = () => {
     const { database } = this.props
 
-    database.ref('/comments').once('value').then((snapshot) => {
+    database.ref('/comments').on('value', (snapshot) => {
       const comments = snapshotToArray(snapshot) || []
       this.setState({data: comments})
     })
@@ -75,7 +74,6 @@ class CommentBox extends Component {
 
   componentDidMount() {
     this.loadCommentsFromServer()
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval)
   }
 
   render() {
@@ -147,6 +145,6 @@ class CommentForm extends Component {
 }
 
 ReactDOM.render(
-  <CommentBox database={firebase.database()} pollInterval={2000} />,
+  <CommentBox database={firebase.database()} />,
   document.getElementById('root')
 )
