@@ -8,10 +8,7 @@ module.exports = {
       {
         test: /.js?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react']
-        }
+        exclude: /node_modules/
       }
     ]
   },
@@ -20,6 +17,11 @@ module.exports = {
       {
         from: __dirname + '/src/index.html',
         to: __dirname + '/build/index.html'
+      },
+
+      {
+        from: __dirname + '/src/main.css',
+        to: __dirname + '/build/main.css'
       }
     ])
   ]
