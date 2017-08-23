@@ -1,5 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import reducers from './reducers'
 import firebase from 'firebase'
 
 import CommentBox from './components/CommentBox'
@@ -15,7 +18,11 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
+const store = createStore(reducers)
+
 ReactDOM.render(
-  <CommentBox database={firebase.database()} />,
+  <Provider store={store}>
+    <CommentBox database={firebase.database()} />
+  </Provider>,
   document.getElementById('root')
 )
