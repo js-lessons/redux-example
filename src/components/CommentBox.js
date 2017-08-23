@@ -1,45 +1,21 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { commentsLoaded } from '../actions/comments'
+import { loadComments, addComment } from '../actions/comments'
 
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 
-const snapshotToArray = (snapshot) => {
-  const returnArr = []
 
-  snapshot.forEach((childSnapshot) => {
-    returnArr.push(childSnapshot.val())
-  })
-
-  return returnArr
-}
-
-class CommentBox extends Component {
+class CommentBox extends PureComponent {
   static propTypes = {
-    commentsWasLoaded: PropTypes.func.isRequired,
-    comments: PropTypes.array.isRequired,
-    database: PropTypes.object.isRequired
-  }
-
-  loadCommentsFromServer = () => {
-    const { database, commentsWasLoaded } = this.props
-
-    database.ref('/comments').on('value', (snapshot) => {
-      const comments = snapshotToArray(snapshot) || []
-      commentsWasLoaded(comments)
-    })
-  }
-
-  handleCommentSubmit = (comment) => {
-    const { database } = this.props
-    const newCommentRef = database.ref('/comments').push()
-    newCommentRef.set(comment)
+    loadComments: PropTypes.func.isRequired,
+    addComment: PropTypes.func.isRequired,
+    comments: PropTypes.array.isRequired
   }
 
   componentDidMount() {
-    this.loadCommentsFromServer()
+    this.props.loadComments()
   }
 
   render() {
@@ -47,7 +23,7 @@ class CommentBox extends Component {
       <div className="commentBox">
         <h1>Comments</h1>
         <CommentList data={this.props.comments} />
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+        <CommentForm onCommentSubmit={this.props.addComment} />
       </div>
     )
   }
@@ -58,8 +34,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  commentsWasLoaded: comments => {
-    dispatch(commentsLoaded(comments))
+  loadComments: comments => {
+    dispatch(loadComments(comments))
+  },
+  addComment: comment => {
+    dispatch(addComment(comment))
   }
 })
 
