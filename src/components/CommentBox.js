@@ -18,12 +18,20 @@ class CommentBox extends PureComponent {
     comments: PropTypes.array.isRequired
   }
 
+  static childContextTypes = {
+    style: PropTypes.object
+  }
+
   state = {
     theme: 0
   }
 
   componentDidMount() {
     this.props.loadComments()
+  }
+
+  getChildContext() {
+    return {style: themes[this.state.theme]}
   }
 
   render() {
@@ -35,8 +43,8 @@ class CommentBox extends PureComponent {
           <option value="1">grey-red</option>
         </select>
         <h1 style={{color: currentTheme.brandPrimary}}>Comments</h1>
-        <CommentList data={this.props.comments} style={currentTheme}/>
-        <CommentForm onCommentSubmit={this.props.addComment} style={currentTheme}/>
+        <CommentList data={this.props.comments}/>
+        <CommentForm onCommentSubmit={this.props.addComment}/>
       </div>
     )
   }
