@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import withStyleHoC from './withStyleHoC'
 
 class CommentForm extends Component {
   static propTypes = {
-    onCommentSubmit: PropTypes.func.isRequired
-  }
-
-  static contextTypes = {
+    onCommentSubmit: PropTypes.func.isRequired,
     style: PropTypes.object
   }
 
@@ -26,7 +24,7 @@ class CommentForm extends Component {
   }
 
   render() {
-    const {brandPrimary, brandSecondary} = this.context.style || {}
+    const {brandPrimary, brandSecondary} = this.props.style
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <input
@@ -45,4 +43,4 @@ class CommentForm extends Component {
   }
 }
 
-export default CommentForm
+export default withStyleHoC(CommentForm)

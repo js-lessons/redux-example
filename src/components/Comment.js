@@ -1,10 +1,11 @@
 import React from 'react'
 import showdown from 'showdown'
 import PropTypes from 'prop-types'
+import withStyleHoC from './withStyleHoC'
 
 const converter = new showdown.Converter()
 
-const Comment = ({ children, author}, {style}) => {
+const Comment = ({ children, author, style}) => {
   const rawMarkup = converter.makeHtml(children.toString())
 
   return (
@@ -17,15 +18,10 @@ const Comment = ({ children, author}, {style}) => {
   )
 }
 
-
 Comment.propTypes = {
   children: PropTypes.string,
-  author: PropTypes.string
-}
-
-Comment.contextTypes = {
+  author: PropTypes.string,
   style: PropTypes.object
 }
 
-
-export default Comment
+export default withStyleHoC(Comment)
