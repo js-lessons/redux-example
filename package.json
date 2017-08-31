@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/js-lessons/react-comments#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "firebase": "^4.2.0",
     "koa": "^2.3.0",
     "koa-convert": "^1.2.0",
@@ -32,6 +33,9 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.15.6",
     "redux-thunk": "^2.2.0",
     "showdown": "^1.7.2"
   },
