@@ -1,10 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 import { commentsLoaded } from '../../actions/comments'
-import { snapshotToArray } from '../../utils/firebase'
-import {
-  addComment, loadComments,
-  getComments, saveComment
-} from '../comments'
+import { snapshotToArray, getComments, saveComment } from '../../utils/firebase'
+import { addComment, loadComments } from '../comments'
 
 describe('comments', () => {
   describe('addComment', () => {

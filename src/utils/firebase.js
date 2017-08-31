@@ -13,7 +13,12 @@ export const initializeFirebase = () => {
   firebase.initializeApp(firebaseConfig)
 }
 
-export const getDatabase = () => firebase.database()
+export const getComments = () => firebase.database().ref('/comments').once('value')
+
+export const saveComment = (comment) => {
+  const newCommentRef = firebase.database().ref('/comments').push()
+  newCommentRef.set(comment)
+}
 
 export const snapshotToArray = (snapshot) => {
   const returnArr = []

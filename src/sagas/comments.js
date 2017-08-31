@@ -1,12 +1,6 @@
 import { takeLatest, put, call } from 'redux-saga/effects'
-import { getDatabase, snapshotToArray } from '../utils/firebase'
+import { snapshotToArray, getComments, saveComment } from '../utils/firebase'
 import { LOAD_COMMENTS, ADD_COMMENT, commentsLoaded } from '../actions/comments'
-
-export const getComments = () => getDatabase().ref('/comments').once('value')
-export const saveComment = (comment) => {
-  const newCommentRef = getDatabase().ref('/comments').push()
-  newCommentRef.set(comment)
-}
 
 export function *loadComments() {
   const snapshot = yield call(getComments)
