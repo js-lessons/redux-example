@@ -6,13 +6,20 @@ import { loadComments, addComment } from '../actions/comments'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 
+const themes = [
+  {brandPrimary: 'blue', brandSecondary: 'yellow'},
+  {brandPrimary: 'red', brandSecondary: 'grey'}
+]
 
 class CommentBox extends PureComponent {
   static propTypes = {
     loadComments: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
-    comments: PropTypes.array.isRequired,
-    style: PropTypes.object
+    comments: PropTypes.array.isRequired
+  }
+
+  state = {
+    theme: 0
   }
 
   componentDidMount() {
@@ -20,12 +27,16 @@ class CommentBox extends PureComponent {
   }
 
   render() {
-    const {brandPrimary} = this.props.style || {}
+    const currentTheme = themes[this.state.theme]
     return (
       <div className="commentBox">
-        <h1 style={{color: brandPrimary}}>Comments</h1>
-        <CommentList data={this.props.comments} style={this.props.style}/>
-        <CommentForm onCommentSubmit={this.props.addComment} style={this.props.style}/>
+        <select onChange={e => this.setState({theme: e.target.value})} value={this.state.theme}>
+          <option value="0">yellow-blue</option>
+          <option value="1">grey-red</option>
+        </select>
+        <h1 style={{color: currentTheme.brandPrimary}}>Comments</h1>
+        <CommentList data={this.props.comments} style={currentTheme}/>
+        <CommentForm onCommentSubmit={this.props.addComment} style={currentTheme}/>
       </div>
     )
   }
