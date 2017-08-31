@@ -11,7 +11,8 @@ class CommentBox extends PureComponent {
   static propTypes = {
     loadComments: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
-    comments: PropTypes.array.isRequired
+    comments: PropTypes.array.isRequired,
+    style: PropTypes.object
   }
 
   componentDidMount() {
@@ -19,11 +20,12 @@ class CommentBox extends PureComponent {
   }
 
   render() {
+    const {brandPrimary} = this.props.style || {}
     return (
       <div className="commentBox">
-        <h1>Comments</h1>
-        <CommentList data={this.props.comments} />
-        <CommentForm onCommentSubmit={this.props.addComment} />
+        <h1 style={{color: brandPrimary}}>Comments</h1>
+        <CommentList data={this.props.comments} style={this.props.style}/>
+        <CommentForm onCommentSubmit={this.props.addComment} style={this.props.style}/>
       </div>
     )
   }

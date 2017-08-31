@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 
 class CommentForm extends Component {
   static propTypes = {
-    onCommentSubmit: PropTypes.func.isRequired
+    onCommentSubmit: PropTypes.func.isRequired,
+    style: PropTypes.object
   }
 
   handleSubmit = (e) => {
@@ -22,10 +23,19 @@ class CommentForm extends Component {
   }
 
   render() {
+    const {brandPrimary, brandSecondary} = this.props.style || {}
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref={el => { this.author = el }} />
-        <input type="text" placeholder="Say something..." ref={el => { this.text = el }} />
+        <input
+          type="text"
+          style={{borderColor: brandSecondary, color: brandPrimary}}
+          placeholder="Your name"
+          ref={el => { this.author = el }} />
+        <input
+          type="text"
+          style={{borderColor: brandSecondary, color: brandPrimary}}
+          placeholder="Say something..."
+          ref={el => { this.text = el }} />
         <input type="submit" value="Post" />
       </form>
     )

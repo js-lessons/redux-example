@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 
 const converter = new showdown.Converter()
 
-const Comment = ({ children, author }) => {
+const Comment = ({ children, author, style}) => {
   const rawMarkup = converter.makeHtml(children.toString())
 
   return (
-    <div className="comment">
-      <h2 className="commentAuthor">
+    <div className="comment" style={{backgroundColor: style.brandSecondary}}>
+      <h2 className="commentAuthor" style={{color: style.brandPrimary}}>
         {author}
       </h2>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
@@ -20,7 +20,8 @@ const Comment = ({ children, author }) => {
 
 Comment.propTypes = {
   children: PropTypes.string,
-  author: PropTypes.string
+  author: PropTypes.string,
+  style: PropTypes.object
 }
 
 

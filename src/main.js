@@ -10,7 +10,7 @@ const store = createStore(reducers, middlewares)
 
 ReactDOM.render(
   <Provider store={store}>
-    <CommentBox/>
+    <CommentBox style={{brandPrimary: 'blue', brandSecondary: 'yellow'}}/>
   </Provider>,
   document.getElementById('root')
 )
